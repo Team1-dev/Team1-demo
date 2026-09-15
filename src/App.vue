@@ -10,6 +10,10 @@ function addTodo() {
   todos.value.push({ text, done: false })
   newTodo.value = ''
 }
+
+function deleteTodo(index) {
+  todos.value.splice(index, 1)
+}
 </script>
 
 <template>
@@ -24,6 +28,9 @@ function addTodo() {
         <input type="checkbox" v-model="todo.done" :aria-label="`Mark ${todo.text} as done`" />
         {{ todo.text }}
       </label>
+      <button type="button" @click="deleteTodo(index)" :aria-label="`Delete ${todo.text}`">
+        Delete
+      </button>
     </li>
   </ul>
 </template>
