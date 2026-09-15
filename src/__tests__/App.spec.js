@@ -1,9 +1,13 @@
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, beforeEach } from 'vitest'
 
 import { mount } from '@vue/test-utils'
 import App from '../App.vue'
 
 describe('App', () => {
+  beforeEach(() => {
+    localStorage.clear()
+  })
+
   it('adds a todo item to the list when submitted', async () => {
     const wrapper = mount(App)
 
@@ -55,5 +59,17 @@ describe('App', () => {
     await wrapper.find('button[type="button"]').trigger('click')
 
     expect(wrapper.findAll('li')).toHaveLength(0)
+  })
+
+  it('keeps todos after the page is reloaded', async () => {
+    const wrapper = mount(App)
+
+    await wrapper.find('input[type="text"]').setValue('Buy milk')
+    await wrapper.find('form').trigger('submit')
+
+    const reloaded = mount(App)
+    const items = reloaded.findAll('li')
+    expect(items).toHaveLength(1)
+    expect(items[0].find('label').text()).toBe('Buy milk')
   })
 })
