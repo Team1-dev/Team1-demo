@@ -56,7 +56,7 @@ describe('App', () => {
     await wrapper.find('input[type="text"]').setValue('Buy milk')
     await wrapper.find('form').trigger('submit')
 
-    await wrapper.find('button[type="button"]').trigger('click')
+    await wrapper.find('[aria-label="Delete Buy milk"]').trigger('click')
 
     expect(wrapper.findAll('li')).toHaveLength(0)
   })
@@ -72,6 +72,27 @@ describe('App', () => {
     await wrapper.findAll('input[type="checkbox"]')[0].setValue(true)
 
     expect(wrapper.find('p').text()).toBe('1 item left')
+  })
+
+  it('shows only active or completed todos when filtered', async () => {
+    const wrapper = mount(App)
+
+    await wrapper.find('input[type="text"]').setValue('Buy milk')
+    await wrapper.find('form').trigger('submit')
+    await wrapper.find('input[type="text"]').setValue('Walk dog')
+    await wrapper.find('form').trigger('submit')
+
+    await wrapper.findAll('input[type="checkbox"]')[0].setValue(true)
+
+    const buttons = wrapper.findAll('button')
+    const activeFilter = buttons.find((button) => button.text() === 'Active')
+    const completedFilter = buttons.find((button) => button.text() === 'Completed')
+
+    await activeFilter.trigger('click')
+    expect(wrapper.findAll('li').map((item) => item.find('label').text())).toEqual(['Walk dog'])
+
+    await completedFilter.trigger('click')
+    expect(wrapper.findAll('li').map((item) => item.find('label').text())).toEqual(['Buy milk'])
   })
 
   it('keeps todos after the page is reloaded', async () => {
