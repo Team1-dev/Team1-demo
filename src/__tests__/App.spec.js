@@ -32,4 +32,17 @@ describe('App', () => {
 
     expect(wrapper.findAll('li')).toHaveLength(0)
   })
+
+  it('marks a todo item as done when its checkbox is checked', async () => {
+    const wrapper = mount(App)
+
+    await wrapper.find('input[type="text"]').setValue('Buy milk')
+    await wrapper.find('form').trigger('submit')
+
+    const checkbox = wrapper.find('input[type="checkbox"]')
+    await checkbox.setValue(true)
+
+    expect(checkbox.element.checked).toBe(true)
+    expect(wrapper.find('li').classes()).toContain('done')
+  })
 })
