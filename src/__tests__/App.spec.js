@@ -112,6 +112,34 @@ describe('App', () => {
     expect(wrapper.findAll('li').map((item) => item.find('label').text())).toEqual(['Walk dog'])
   })
 
+  it('edits a todo item text on double click', async () => {
+    const wrapper = mount(App)
+
+    await wrapper.find('input[type="text"]').setValue('Buy milk')
+    await wrapper.find('form').trigger('submit')
+
+    await wrapper.find('li span').trigger('dblclick')
+    const editInput = wrapper.find('li input[type="text"]')
+    await editInput.setValue('Buy oat milk')
+    await editInput.trigger('keyup.enter')
+
+    expect(wrapper.find('li label').text()).toBe('Buy oat milk')
+  })
+
+  it('does not clear a todo item when edited to an empty value', async () => {
+    const wrapper = mount(App)
+
+    await wrapper.find('input[type="text"]').setValue('Buy milk')
+    await wrapper.find('form').trigger('submit')
+
+    await wrapper.find('li span').trigger('dblclick')
+    const editInput = wrapper.find('li input[type="text"]')
+    await editInput.setValue('   ')
+    await editInput.trigger('keyup.enter')
+
+    expect(wrapper.find('li label').text()).toBe('Buy milk')
+  })
+
   it('keeps todos after the page is reloaded', async () => {
     const wrapper = mount(App)
 

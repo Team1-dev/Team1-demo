@@ -27,6 +27,28 @@ function clearCompleted() {
   todos.value = todos.value.filter((todo) => !todo.done)
 }
 
+const editingIndex = ref(null)
+const editingText = ref('')
+
+function startEditing(index, text) {
+  editingIndex.value = index
+  editingText.value = text
+}
+
+function focusOnMount(element) {
+  element?.focus()
+}
+
+function saveEdit(index) {
+  const text = editingText.value.trim()
+  if (text) todos.value[index].text = text
+  editingIndex.value = null
+}
+
+function cancelEdit() {
+  editingIndex.value = null
+}
+
 const remaining = computed(() => todos.value.filter((todo) => !todo.done).length)
 
 const filter = ref('all')
@@ -76,10 +98,20 @@ const filteredTodos = computed(() => {
   </div>
   <ul>
     <li v-for="{ todo, index } in filteredTodos" :key="index" :class="{ done: todo.done }">
-      <label>
+      <label v-if="editingIndex !== index">
         <input type="checkbox" v-model="todo.done" :aria-label="`Mark ${todo.text} as done`" />
-        {{ todo.text }}
+        <span @dblclick="startEditing(index, todo.text)">{{ todo.text }}</span>
       </label>
+      <input
+        v-else
+        :ref="focusOnMount"
+        type="text"
+        v-model="editingText"
+        :aria-label="`Edit ${todo.text}`"
+        @blur="saveEdit(index)"
+        @keyup.enter="saveEdit(index)"
+        @keyup.esc="cancelEdit"
+      />
       <button type="button" @click="deleteTodo(index)" :aria-label="`Delete ${todo.text}`">
         Delete
       </button>
