@@ -61,6 +61,19 @@ describe('App', () => {
     expect(wrapper.findAll('li')).toHaveLength(0)
   })
 
+  it('shows how many todo items are left', async () => {
+    const wrapper = mount(App)
+
+    await wrapper.find('input[type="text"]').setValue('Buy milk')
+    await wrapper.find('form').trigger('submit')
+    await wrapper.find('input[type="text"]').setValue('Walk dog')
+    await wrapper.find('form').trigger('submit')
+
+    await wrapper.findAll('input[type="checkbox"]')[0].setValue(true)
+
+    expect(wrapper.find('p').text()).toBe('1 item left')
+  })
+
   it('keeps todos after the page is reloaded', async () => {
     const wrapper = mount(App)
 
