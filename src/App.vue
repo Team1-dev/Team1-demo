@@ -1,8 +1,16 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
+
+const STORAGE_KEY = 'todos'
 
 const newTodo = ref('')
-const todos = ref([])
+const todos = ref(JSON.parse(localStorage.getItem(STORAGE_KEY) ?? '[]'))
+
+watch(
+  todos,
+  (value) => localStorage.setItem(STORAGE_KEY, JSON.stringify(value)),
+  { deep: true },
+)
 
 function addTodo() {
   const text = newTodo.value.trim()
