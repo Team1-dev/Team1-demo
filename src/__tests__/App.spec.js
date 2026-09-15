@@ -140,6 +140,39 @@ describe('App', () => {
     expect(wrapper.find('li label').text()).toBe('Buy milk')
   })
 
+  it('cancels an edit on escape without saving', async () => {
+    const wrapper = mount(App)
+
+    await wrapper.find('input[type="text"]').setValue('Buy milk')
+    await wrapper.find('form').trigger('submit')
+
+    await wrapper.find('li span').trigger('dblclick')
+    const editInput = wrapper.find('li input[type="text"]')
+    await editInput.setValue('Buy oat milk')
+    await editInput.trigger('keyup.esc')
+    await editInput.trigger('blur')
+
+    expect(wrapper.find('li label').text()).toBe('Buy milk')
+  })
+
+  it('keeps editing the right todo when an earlier row is deleted', async () => {
+    const wrapper = mount(App)
+
+    await wrapper.find('input[type="text"]').setValue('Buy milk')
+    await wrapper.find('form').trigger('submit')
+    await wrapper.find('input[type="text"]').setValue('Walk dog')
+    await wrapper.find('form').trigger('submit')
+
+    await wrapper.findAll('li span')[1].trigger('dblclick')
+    await wrapper.find('[aria-label="Delete Buy milk"]').trigger('click')
+
+    const editInput = wrapper.find('li input[type="text"]')
+    await editInput.setValue('Walk the dog')
+    await editInput.trigger('keyup.enter')
+
+    expect(wrapper.find('li label').text()).toBe('Walk the dog')
+  })
+
   it('keeps todos after the page is reloaded', async () => {
     const wrapper = mount(App)
 
