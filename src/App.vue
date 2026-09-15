@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 
 const STORAGE_KEY = 'todos'
 
@@ -22,6 +22,8 @@ function addTodo() {
 function deleteTodo(index) {
   todos.value.splice(index, 1)
 }
+
+const remaining = computed(() => todos.value.filter((todo) => !todo.done).length)
 </script>
 
 <template>
@@ -41,6 +43,7 @@ function deleteTodo(index) {
       </button>
     </li>
   </ul>
+  <p>{{ remaining }} item{{ remaining === 1 ? '' : 's' }} left</p>
 </template>
 
 <style scoped>
