@@ -95,6 +95,23 @@ describe('App', () => {
     expect(wrapper.findAll('li').map((item) => item.find('label').text())).toEqual(['Buy milk'])
   })
 
+  it('removes all completed todos when clear completed is clicked', async () => {
+    const wrapper = mount(App)
+
+    await wrapper.find('input[type="text"]').setValue('Buy milk')
+    await wrapper.find('form').trigger('submit')
+    await wrapper.find('input[type="text"]').setValue('Walk dog')
+    await wrapper.find('form').trigger('submit')
+
+    await wrapper.findAll('input[type="checkbox"]')[0].setValue(true)
+
+    const buttons = wrapper.findAll('button')
+    const clearCompleted = buttons.find((button) => button.text() === 'Clear completed')
+    await clearCompleted.trigger('click')
+
+    expect(wrapper.findAll('li').map((item) => item.find('label').text())).toEqual(['Walk dog'])
+  })
+
   it('keeps todos after the page is reloaded', async () => {
     const wrapper = mount(App)
 

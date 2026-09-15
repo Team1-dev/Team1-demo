@@ -23,6 +23,10 @@ function deleteTodo(index) {
   todos.value.splice(index, 1)
 }
 
+function clearCompleted() {
+  todos.value = todos.value.filter((todo) => !todo.done)
+}
+
 const remaining = computed(() => todos.value.filter((todo) => !todo.done).length)
 
 const filter = ref('all')
@@ -82,6 +86,7 @@ const filteredTodos = computed(() => {
     </li>
   </ul>
   <p>{{ remaining }} item{{ remaining === 1 ? '' : 's' }} left</p>
+  <button type="button" @click="clearCompleted">Clear completed</button>
 </template>
 
 <style scoped>
