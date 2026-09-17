@@ -191,6 +191,36 @@ describe('App', () => {
     ])
   })
 
+  it('highlights a todo as overdue when its due date has passed', async () => {
+    const wrapper = mount(App)
+
+    await wrapper.find('input[type="text"]').setValue('Buy milk')
+    await wrapper.find('input[type="date"]').setValue('2000-01-01')
+    await wrapper.find('form').trigger('submit')
+
+    expect(wrapper.find('li').classes()).toContain('overdue')
+  })
+
+  it('does not highlight a todo without a due date', async () => {
+    const wrapper = mount(App)
+
+    await wrapper.find('input[type="text"]').setValue('Buy milk')
+    await wrapper.find('form').trigger('submit')
+
+    expect(wrapper.find('li').classes()).not.toContain('overdue')
+  })
+
+  it('does not highlight a completed todo even if its due date has passed', async () => {
+    const wrapper = mount(App)
+
+    await wrapper.find('input[type="text"]').setValue('Buy milk')
+    await wrapper.find('input[type="date"]').setValue('2000-01-01')
+    await wrapper.find('form').trigger('submit')
+    await wrapper.find('input[type="checkbox"]').setValue(true)
+
+    expect(wrapper.find('li').classes()).not.toContain('overdue')
+  })
+
   it('keeps todos after the page is reloaded', async () => {
     const wrapper = mount(App)
 

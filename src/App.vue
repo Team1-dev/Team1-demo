@@ -4,6 +4,7 @@ import { computed, ref, watch } from 'vue'
 const STORAGE_KEY = 'todos'
 
 const newTodo = ref('')
+const newDueDate = ref('')
 const todos = ref(JSON.parse(localStorage.getItem(STORAGE_KEY) ?? '[]'))
 
 watch(
@@ -15,8 +16,15 @@ watch(
 function addTodo() {
   const text = newTodo.value.trim()
   if (!text) return
-  todos.value.push({ text, done: false })
+  todos.value.push({ text, done: false, dueDate: newDueDate.value || null })
   newTodo.value = ''
+  newDueDate.value = ''
+}
+
+function isOverdue(todo) {
+  if (!todo.dueDate || todo.done) return false
+  const today = new Date().toISOString().slice(0, 10)
+  return todo.dueDate < today
 }
 
 function deleteTodo(index) {
@@ -83,6 +91,7 @@ const filteredTodos = computed(() => {
   <h1>Todo</h1>
   <form @submit.prevent="addTodo">
     <input v-model="newTodo" type="text" placeholder="Add a todo" aria-label="New todo" />
+    <input v-model="newDueDate" type="date" aria-label="Due date" />
     <button type="submit">Add</button>
   </form>
   <div role="group" aria-label="Filter todos">
@@ -115,7 +124,7 @@ const filteredTodos = computed(() => {
     <li
       v-for="{ todo, index } in filteredTodos"
       :key="index"
-      :class="{ done: todo.done }"
+      :class="{ done: todo.done, overdue: isOverdue(todo) }"
       draggable="true"
       @dragstart="startDrag(index)"
       @dragover.prevent
@@ -124,6 +133,7 @@ const filteredTodos = computed(() => {
       <label v-if="editingTodo !== todo">
         <input type="checkbox" v-model="todo.done" :aria-label="`Mark ${todo.text} as done`" />
         <span @dblclick="startEditing(todo)">{{ todo.text }}</span>
+        <span v-if="todo.dueDate" class="due-date">Due {{ todo.dueDate }}</span>
       </label>
       <input
         v-else
@@ -299,5 +309,9 @@ li button[aria-label^='Delete']:hover {
 
 .done {
   text-decoration: line-through;
+}
+
+.overdue {
+  color: red;
 }
 </style>
