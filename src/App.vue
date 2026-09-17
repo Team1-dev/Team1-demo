@@ -84,10 +84,16 @@ const filteredTodos = computed(() => {
       return true
     })
 })
+
+const darkModeQuery = window.matchMedia?.('(prefers-color-scheme: dark)')
+const prefersDark = ref(darkModeQuery?.matches ?? false)
+darkModeQuery?.addEventListener('change', (event) => {
+  prefersDark.value = event.matches
+})
 </script>
 
 <template>
-  <div class="app">
+  <div class="app" :class="{ dark: prefersDark }">
   <h1>Todo</h1>
   <form @submit.prevent="addTodo">
     <input v-model="newTodo" type="text" placeholder="Add a todo" aria-label="New todo" />
@@ -160,8 +166,19 @@ const filteredTodos = computed(() => {
 <style>
 body {
   margin: 0;
-  background: #f4f6f8;
   min-height: 100vh;
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    background: #1e2328;
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  body {
+    background: #f4f6f8;
+  }
 }
 </style>
 
@@ -171,15 +188,34 @@ body {
 }
 
 .app {
+  --bg: #f4f6f8;
+  --surface: #fff;
+  --border: #d7dce1;
+  --border-strong: #e5e9ec;
+  --text: #2c3e50;
+  --text-muted: #6b7280;
+  --text-done: #9aa5ad;
+
   max-width: 32rem;
   margin: 2rem auto;
   padding: 0 1rem;
   font-family: system-ui, sans-serif;
+  color: var(--text);
+}
+
+.app.dark {
+  --bg: #1e2328;
+  --surface: #262b31;
+  --border: #3a4047;
+  --border-strong: #343a40;
+  --text: #e5e9ec;
+  --text-muted: #9aa5ad;
+  --text-done: #6b7280;
 }
 
 h1 {
   margin: 0 0 1rem;
-  color: #2c3e50;
+  color: var(--text);
 }
 
 form {
@@ -191,9 +227,11 @@ form {
 form input {
   flex: 1;
   padding: 0.6rem 0.8rem;
-  border: 1px solid #d7dce1;
+  border: 1px solid var(--border);
   border-radius: 6px;
   font-size: 1rem;
+  background: var(--surface);
+  color: var(--text);
 }
 
 form input:focus {
@@ -204,17 +242,17 @@ form input:focus {
 
 button {
   cursor: pointer;
-  border: 1px solid #d7dce1;
+  border: 1px solid var(--border);
   border-radius: 6px;
-  background: #fff;
+  background: var(--surface);
   padding: 0.5rem 0.9rem;
   font-size: 0.95rem;
-  color: #2c3e50;
+  color: var(--text);
   transition: background-color 0.15s ease, border-color 0.15s ease;
 }
 
 button:hover {
-  background: #f4f6f8;
+  background: var(--bg);
 }
 
 form button[type='submit'] {
@@ -234,9 +272,9 @@ form button[type='submit']:hover {
 }
 
 [role='group'] button.active {
-  background: #2c3e50;
-  border-color: #2c3e50;
-  color: #fff;
+  background: var(--text);
+  border-color: var(--text);
+  color: var(--bg);
   font-weight: 600;
 }
 
@@ -250,8 +288,8 @@ li {
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  background: #fff;
-  border: 1px solid #e5e9ec;
+  background: var(--surface);
+  border: 1px solid var(--border-strong);
   border-radius: 8px;
   padding: 0.75rem 1rem;
   margin-bottom: 0.5rem;
@@ -278,10 +316,12 @@ li input[type='text'] {
   border: 1px solid #42b883;
   border-radius: 6px;
   font-size: 1rem;
+  background: var(--surface);
+  color: var(--text);
 }
 
 li.done span {
-  color: #9aa5ad;
+  color: var(--text-done);
 }
 
 li button[aria-label^='Delete'] {
@@ -304,7 +344,7 @@ li button[aria-label^='Delete']:hover {
 
 .footer p {
   margin: 0;
-  color: #6b7280;
+  color: var(--text-muted);
 }
 
 .done {
