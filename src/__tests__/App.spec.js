@@ -232,4 +232,18 @@ describe('App', () => {
     expect(items).toHaveLength(1)
     expect(items[0].find('label').text()).toBe('Buy milk')
   })
+
+  it('follows the system dark mode setting', () => {
+    const originalMatchMedia = window.matchMedia
+    window.matchMedia = (query) => ({
+      matches: query === '(prefers-color-scheme: dark)',
+      addEventListener: () => {},
+    })
+
+    const wrapper = mount(App)
+
+    expect(wrapper.find('.app').classes()).toContain('dark')
+
+    window.matchMedia = originalMatchMedia
+  })
 })
