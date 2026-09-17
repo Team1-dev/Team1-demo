@@ -27,6 +27,19 @@ function clearCompleted() {
   todos.value = todos.value.filter((todo) => !todo.done)
 }
 
+const draggedIndex = ref(null)
+
+function startDrag(index) {
+  draggedIndex.value = index
+}
+
+function dropAt(index) {
+  if (draggedIndex.value === null || draggedIndex.value === index) return
+  const [moved] = todos.value.splice(draggedIndex.value, 1)
+  todos.value.splice(index, 0, moved)
+  draggedIndex.value = null
+}
+
 const editingTodo = ref(null)
 const editingText = ref('')
 
@@ -98,7 +111,15 @@ const filteredTodos = computed(() => {
     </button>
   </div>
   <ul>
-    <li v-for="{ todo, index } in filteredTodos" :key="index" :class="{ done: todo.done }">
+    <li
+      v-for="{ todo, index } in filteredTodos"
+      :key="index"
+      :class="{ done: todo.done }"
+      draggable="true"
+      @dragstart="startDrag(index)"
+      @dragover.prevent
+      @drop="dropAt(index)"
+    >
       <label v-if="editingTodo !== todo">
         <input type="checkbox" v-model="todo.done" :aria-label="`Mark ${todo.text} as done`" />
         <span @dblclick="startEditing(todo)">{{ todo.text }}</span>

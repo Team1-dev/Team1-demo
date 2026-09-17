@@ -173,6 +173,24 @@ describe('App', () => {
     expect(wrapper.find('li label').text()).toBe('Walk the dog')
   })
 
+  it('reorders todos when one is dragged onto another', async () => {
+    const wrapper = mount(App)
+
+    await wrapper.find('input[type="text"]').setValue('Buy milk')
+    await wrapper.find('form').trigger('submit')
+    await wrapper.find('input[type="text"]').setValue('Walk dog')
+    await wrapper.find('form').trigger('submit')
+
+    const items = wrapper.findAll('li')
+    await items[0].trigger('dragstart')
+    await items[1].trigger('drop')
+
+    expect(wrapper.findAll('li').map((item) => item.find('label').text())).toEqual([
+      'Walk dog',
+      'Buy milk',
+    ])
+  })
+
   it('keeps todos after the page is reloaded', async () => {
     const wrapper = mount(App)
 
