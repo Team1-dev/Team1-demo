@@ -79,6 +79,7 @@ const filteredTodos = computed(() => {
 </script>
 
 <template>
+  <div class="app">
   <h1>Todo</h1>
   <form @submit.prevent="addTodo">
     <input v-model="newTodo" type="text" placeholder="Add a todo" aria-label="New todo" />
@@ -139,16 +140,164 @@ const filteredTodos = computed(() => {
       </button>
     </li>
   </ul>
-  <p>{{ remaining }} item{{ remaining === 1 ? '' : 's' }} left</p>
-  <button type="button" @click="clearCompleted">Clear completed</button>
+  <div class="footer">
+    <p>{{ remaining }} item{{ remaining === 1 ? '' : 's' }} left</p>
+    <button type="button" @click="clearCompleted">Clear completed</button>
+  </div>
+  </div>
 </template>
 
+<style>
+body {
+  margin: 0;
+  background: #f4f6f8;
+  min-height: 100vh;
+}
+</style>
+
 <style scoped>
-.done {
-  text-decoration: line-through;
+* {
+  box-sizing: border-box;
 }
 
-.active {
-  font-weight: bold;
+.app {
+  max-width: 32rem;
+  margin: 2rem auto;
+  padding: 0 1rem;
+  font-family: system-ui, sans-serif;
+}
+
+h1 {
+  margin: 0 0 1rem;
+  color: #2c3e50;
+}
+
+form {
+  margin: 0 0 1rem;
+  display: flex;
+  gap: 0.5rem;
+}
+
+form input {
+  flex: 1;
+  padding: 0.6rem 0.8rem;
+  border: 1px solid #d7dce1;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+form input:focus {
+  outline: none;
+  border-color: #42b883;
+  box-shadow: 0 0 0 3px rgba(66, 184, 131, 0.2);
+}
+
+button {
+  cursor: pointer;
+  border: 1px solid #d7dce1;
+  border-radius: 6px;
+  background: #fff;
+  padding: 0.5rem 0.9rem;
+  font-size: 0.95rem;
+  color: #2c3e50;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+button:hover {
+  background: #f4f6f8;
+}
+
+form button[type='submit'] {
+  background: #42b883;
+  border-color: #42b883;
+  color: #fff;
+}
+
+form button[type='submit']:hover {
+  background: #369e70;
+}
+
+[role='group'] {
+  margin: 0 0 1rem;
+  display: flex;
+  gap: 0.5rem;
+}
+
+[role='group'] button.active {
+  background: #2c3e50;
+  border-color: #2c3e50;
+  color: #fff;
+  font-weight: 600;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+li {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: #fff;
+  border: 1px solid #e5e9ec;
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  margin-bottom: 0.5rem;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+li label {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  cursor: pointer;
+}
+
+li input[type='checkbox'] {
+  width: 1.1rem;
+  height: 1.1rem;
+  accent-color: #42b883;
+}
+
+li input[type='text'] {
+  flex: 1;
+  padding: 0.4rem 0.6rem;
+  border: 1px solid #42b883;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+li.done span {
+  color: #9aa5ad;
+}
+
+li button[aria-label^='Delete'] {
+  border-color: transparent;
+  background: transparent;
+  color: #c0392b;
+}
+
+li button[aria-label^='Delete']:hover {
+  background: #fdecea;
+  border-color: #f5c6c0;
+}
+
+.footer {
+  margin-top: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.footer p {
+  margin: 0;
+  color: #6b7280;
+}
+
+.done {
+  text-decoration: line-through;
 }
 </style>
