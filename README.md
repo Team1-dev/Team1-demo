@@ -1,44 +1,24 @@
-# .
+# Team1-demo
 
-This template should help get you started developing with Vue 3 in Vite.
+A Vue 3 todo app built entirely by [Team1-Factory](https://github.com/Team1-dev/Team1-Factory), one GitHub issue at a time. No human wrote, reviewed
+or merged any of the code.
 
-## Recommended IDE Setup
+## See it work
 
-[VS Code](https://code.visualstudio.com/) + [Vue (Official)](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+- [Issues](https://github.com/Team1-dev/Team1-demo/issues?q=is%3Aissue): each one shows the factory's stages as comments (triage, plan, review, merge)
+with the cost of each.
+- [Pull requests](https://github.com/Team1-dev/Team1-demo/pulls?q=is%3Apr): every one opened, reviewed and merged by the factory.
+- Example: [Dark mode](https://github.com/Team1-dev/Team1-demo/issues/24) went from issue to merged PR.
+- [.agents/project.md](.agents/project.md): the only instructions the factory was given, covering house style, invariants and the `npm test` gate.
 
-## Recommended Browser Setup
+## Run it
 
-- Chromium-based browsers (Chrome, Edge, Brave, etc.):
-  - [Vue.js devtools](https://chromewebstore.google.com/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd)
-  - [Turn on Custom Object Formatter in Chrome DevTools](http://bit.ly/object-formatters)
-- Firefox:
-  - [Vue.js devtools](https://addons.mozilla.org/en-US/firefox/addon/vue-js-devtools/)
-  - [Turn on Custom Object Formatter in Firefox DevTools](https://fxdx.dev/firefox-devtools-custom-object-formatters/)
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vite.dev/config/).
-
-## Project Setup
-
-```sh
 npm install
-```
-
-### Compile and Hot-Reload for Development
-
-```sh
 npm run dev
-```
+npm test  
 
-### Compile and Minify for Production
+## Want this on your repo?
 
-```sh
-npm run build
-```
+[Team1-Factory](https://github.com/Team1-dev/Team1-Factory) is open source (Apache-2.0). 
+Questions go to [Discussions](https://github.com/Team1-dev/Team1-Factory/discussions) or [Discord](https://discord.gg/8GtxarKJy).
 
-### Run Unit Tests with [Vitest](https://vitest.dev/)
-
-```sh
-npm run test:unit
-```
