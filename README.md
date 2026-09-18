@@ -14,7 +14,9 @@ with the cost of each.
 ## Run it
 
 npm install
+
 npm run dev
+
 npm test  
 
 ## Want this on your repo?
