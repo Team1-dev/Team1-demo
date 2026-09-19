@@ -22,5 +22,5 @@ npm test
 ## Want this on your repo?
 
 [Team1-Factory](https://github.com/Team1-dev/Team1-Factory) is open source (Apache-2.0). 
-Questions go to [Discussions](https://github.com/Team1-dev/Team1-Factory/discussions) or [Discord](https://discord.gg/8GtxarKJy).
+Questions go to [Discussions](https://github.com/Team1-dev/Team1-Factory/discussions) or [Discord](https://discord.gg/4S6MSBW48A).
 
